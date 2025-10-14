@@ -267,5 +267,4 @@ PROMPT =============================================================
 
 ---
 
-Would you like me to generate a **Visio-style performance dashboard diagram (architecture view)** showing Oracle instance components (SGA, PGA, background processes, I/O flow, SQL monitoring path)?
-I can create it as a **.png or .svg image** for your report or documentation.
+
