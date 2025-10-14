@@ -1,4 +1,4 @@
-**complete ready-to-run Oracle Performance Health Check script** 
+**Complete ready-to-run Oracle Performance Health Check script** 
 — it automatically collects **database, memory, I/O, SQL, and session performance stats** into a text report.
 
 ---
