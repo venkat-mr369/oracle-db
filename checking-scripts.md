@@ -1,8 +1,8 @@
-**comprehensive collection of Oracle Database performance checking scripts** 
+**Comprehensive Oracle Database performance checking scripts** 
 
 ---
 
-## 🔍 **1. Check Database & Instance Information**
+### 🔍 **1. Check Database & Instance Information**
 
 ```sql
 SELECT name, open_mode, database_role, log_mode FROM v$database;
@@ -11,7 +11,7 @@ SELECT instance_name, status, startup_time, host_name, version FROM v$instance;
 
 ---
 
-## ⚙️ **2. Check Initialization Parameters Affecting Performance**
+### ⚙️ **2. Check Initialization Parameters Affecting Performance**
 
 ```sql
 SELECT name, value 
@@ -21,7 +21,7 @@ WHERE name IN ('db_cache_size','shared_pool_size','pga_aggregate_target','sga_ta
 
 ---
 
-## 📊 **3. Check Tablespace Usage**
+### 📊 **3. Check Tablespace Usage**
 
 ```sql
 SELECT df.tablespace_name,
@@ -41,7 +41,7 @@ ORDER BY pct_used DESC;
 
 ---
 
-## 💾 **4. Check Top SQL by CPU Time**
+### 💾 **4. Check Top SQL by CPU Time**
 
 ```sql
 SELECT * FROM (
@@ -59,7 +59,7 @@ SELECT * FROM (
 
 ---
 
-## 🧠 **5. Top SQL by Buffer Gets (Logical Reads)**
+### 🧠 **5. Top SQL by Buffer Gets (Logical Reads)**
 
 ```sql
 SELECT * FROM (
@@ -73,7 +73,7 @@ SELECT * FROM (
 
 ---
 
-## 🕒 **6. Top SQL by Elapsed Time**
+### 🕒 **6. Top SQL by Elapsed Time**
 
 ```sql
 SELECT * FROM (
@@ -87,7 +87,7 @@ SELECT * FROM (
 
 ---
 
-## 🧩 **7. Wait Events (System Level)**
+### 🧩 **7. Wait Events (System Level)**
 
 ```sql
 SELECT event, total_waits, time_waited/100 time_waited_secs
@@ -98,7 +98,7 @@ ORDER BY time_waited DESC;
 
 ---
 
-## 📈 **8. Session Waits (Active Session Bottlenecks)**
+### 📈 **8. Session Waits (Active Session Bottlenecks)**
 
 ```sql
 SELECT sid, event, state, wait_time, seconds_in_wait, p1text, p1, p2text, p2
@@ -108,7 +108,7 @@ WHERE wait_class <> 'Idle';
 
 ---
 
-## 🔄 **9. Active Sessions by CPU or Wait**
+### 🔄 **9. Active Sessions by CPU or Wait**
 
 ```sql
 SELECT s.sid, s.serial#, s.username, s.program, s.sql_id, q.sql_text,
@@ -121,7 +121,7 @@ ORDER BY s.last_call_et DESC;
 
 ---
 
-## ⚡ **10. Check System Statistics (CPU, IO, Memory)**
+### ⚡ **10. Check System Statistics (CPU, IO, Memory)**
 
 ```sql
 SELECT name, value 
@@ -131,7 +131,7 @@ WHERE name IN ('CPU used by this session','DB time','physical reads','physical w
 
 ---
 
-## 🧮 **11. Check I/O Performance by Datafile**
+### 🧮 **11. Check I/O Performance by Datafile**
 
 ```sql
 SELECT df.name, phyrds, phywrts, readtim, writetim,
@@ -144,7 +144,7 @@ ORDER BY avg_read_ms DESC;
 
 ---
 
-## 🧍‍♂️ **12. Top 10 Wait Events (Current Snapshot)**
+### 🧍‍♂️ **12. Top 10 Wait Events (Current Snapshot)**
 
 ```sql
 SELECT * FROM (
@@ -157,7 +157,7 @@ SELECT * FROM (
 
 ---
 
-## 🧰 **13. Check PGA Memory Usage**
+### 🧰 **13. Check PGA Memory Usage**
 
 ```sql
 SELECT name, value/1024/1024 AS mb
@@ -167,7 +167,7 @@ WHERE name IN ('aggregate PGA target parameter','total PGA allocated','total PGA
 
 ---
 
-## 📦 **14. Check SGA Breakdown**
+### 📦 **14. Check SGA Breakdown**
 
 ```sql
 SELECT pool, name, bytes/1024/1024 AS mb
@@ -177,7 +177,7 @@ ORDER BY bytes DESC;
 
 ---
 
-## 🧾 **15. Check Fragmentation in Tablespaces**
+### 🧾 **15. Check Fragmentation in Tablespaces**
 
 ```sql
 SELECT tablespace_name,
@@ -190,7 +190,7 @@ ORDER BY free_mb DESC;
 
 ---
 
-## 🔍 **16. Check Long Running Queries**
+### 🔍 **16. Check Long Running Queries**
 
 ```sql
 SELECT s.sid, s.serial#, s.username, q.sql_text, s.last_call_et/60 AS running_minutes
@@ -201,7 +201,7 @@ WHERE s.status='ACTIVE' AND s.last_call_et > 60;
 
 ---
 
-## 📚 **17. Library Cache Efficiency**
+### 📚 **17. Library Cache Efficiency**
 
 ```sql
 SELECT namespace, gets, gethits, ROUND(gethits*100/gets,2) AS gethit_ratio,
@@ -211,7 +211,7 @@ FROM v$librarycache;
 
 ---
 
-## 📊 **18. Buffer Cache Hit Ratio**
+### 📊 **18. Buffer Cache Hit Ratio**
 
 ```sql
 SELECT ROUND((1 - (phy.value / (cur.value + con.value))) * 100, 2) AS buffer_cache_hit_ratio
@@ -223,7 +223,7 @@ AND phy.name = 'physical reads';
 
 ---
 
-## ⚙️ **19. Shared Pool Free Space**
+### ⚙️ **19. Shared Pool Free Space**
 
 ```sql
 SELECT ROUND((free_space/pool_size)*100,2) AS pct_free
@@ -236,7 +236,7 @@ FROM (
 
 ---
 
-## 🔧 **20. Find Contention on Latches**
+### 🔧 **20. Find Contention on Latches**
 
 ```sql
 SELECT name, gets, misses, ROUND((misses/gets)*100,2) miss_ratio
@@ -247,7 +247,7 @@ ORDER BY miss_ratio DESC;
 
 ---
 
-## ✅ **21. Check Top Segments by Physical Reads**
+### ✅ **21. Check Top Segments by Physical Reads**
 
 ```sql
 SELECT owner, segment_name, segment_type, value AS physical_reads
@@ -259,7 +259,7 @@ ORDER BY value DESC FETCH FIRST 10 ROWS ONLY;
 
 ---
 
-## 🧩 **22. Check Undo Tablespace Usage**
+### 🧩 **22. Check Undo Tablespace Usage**
 
 ```sql
 SELECT d.tablespace_name, d.file_name, 
@@ -273,7 +273,7 @@ WHERE d.tablespace_name LIKE '%UNDO%';
 
 ---
 
-## 📤 **23. Temp Tablespace Usage**
+### 📤 **23. Temp Tablespace Usage**
 
 ```sql
 SELECT tablespace_name, 
@@ -285,7 +285,7 @@ GROUP BY tablespace_name;
 
 ---
 
-## 🧾 **24. Check Redo Log Switches**
+### 🧾 **24. Check Redo Log Switches**
 
 ```sql
 SELECT TO_CHAR(first_time,'YYYY-MM-DD HH24:MI') log_time, COUNT(*) AS switches
@@ -297,7 +297,7 @@ ORDER BY log_time DESC;
 
 ---
 
-## 🧰 **25. Check AWR Baseline (if enabled)**
+### 🧰 **25. Check AWR Baseline (if enabled)**
 
 ```sql
 SELECT * FROM dba_hist_baseline;
@@ -305,7 +305,7 @@ SELECT * FROM dba_hist_baseline;
 
 ---
 
-## 📑 Export Tip
+### 📑 Export Tip
 
 You can spool these results:
 
